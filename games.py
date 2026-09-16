@@ -1,20 +1,19 @@
-from typing import List, Dict, Any, Optional
+from typing import Optional
+
+from models import Game
 
 
-def add_game(games: List[Dict[str, Any]], title: str) -> Dict[str, Any]:
-    """Добавление новой игры в систему."""
-    next_id = max([g["id"] for g in games], default=0) + 1
-    new_game = {"id": next_id, "title": title}
-    games.append(new_game)
-    return new_game
+def add_game(games: list[Game], title: str) -> Game:
+    """Добавить игру с новым идентификатором."""
+    next_id = max((game.id for game in games), default=0) + 1
+    game = Game(id=next_id, title=title)
+    games.append(game)
+    return game
 
 
 def get_game_by_id(
-    games: List[Dict[str, Any]],
-    game_id: int
-) -> Optional[Dict[str, Any]]:
-    """Поиск игры по ID."""
-    for game in games:
-        if game["id"] == game_id:
-            return game
-    return None
+    games: list[Game],
+    game_id: int,
+) -> Optional[Game]:
+    """Найти игру по идентификатору."""
+    return next((game for game in games if game.id == game_id), None)

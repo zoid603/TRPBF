@@ -1,58 +1,65 @@
-from typing import List, Dict, Any, Optional, Generator
+from typing import Generator, Optional
+
+from models import Achievement, Game
 
 
 def add_achievement(
-    achievements: List[Dict[str, Any]],
-    game_id: int,
+    achievements: list[Achievement],
+    game: Game,
     name: str,
     required_actions: int,
-    is_secret: bool = False
-) -> Dict[str, Any]:
-    """Добавление нового достижения."""
-    next_id = max([a["id"] for a in achievements], default=0) + 1
-    ach = {
-        "id": next_id,
-        "game_id": game_id,
-        "name": name,
-        "required_actions": required_actions,
-        "is_secret": is_secret
-    }
-    achievements.append(ach)
-    return ach
+    is_secret: bool = False,
+) -> Achievement:
+    """Добавить достижение, связанное с объектом игры."""
+    next_id = max((item.id for item in achievements), default=0) + 1
+    achievement = Achievement(
+        id=next_id,
+        game=game,
+        name=name,
+        required_actions=required_actions,
+        is_secret=is_secret,
+    )
+    achievements.append(achievement)
+    return achievement
 
 
 def get_achievement_by_id(
-    achievements: List[Dict[str, Any]],
-    ach_id: int
-) -> Optional[Dict[str, Any]]:
-    """Поиск ачивки по ID."""
-    for ach in achievements:
-        if ach["id"] == ach_id:
-            return ach
-    return None
+    achievements: list[Achievement],
+    achievement_id: int,
+) -> Optional[Achievement]:
+    """Найти достижение по идентификатору."""
+    return next(
+        (item for item in achievements if item.id == achievement_id),
+        None,
+    )
 
 
 def find_achievements(
-    achievements: List[Dict[str, Any]],
-    query: str
-) -> Generator[Dict[str, Any], None, None]:
-    """Генератор поиска ачивок по подстроке в названии."""
-    low_query = query.lower()
-    for ach in achievements:
-        if low_query in ach["name"].lower():
-            yield ach
+    achievements: list[Achievement],
+    query: str,
+) -> Generator[Achievement, None, None]:
+    """Найти достижения по подстроке в названии."""
+    normalized = query.casefold()
+    yield from (
+        item
+        for item in achievements
+        if normalized in item.name.casefold()
+    )
 
 
 def sort_achievements_by_complexity(
-    achievements: List[Dict[str, Any]]
-) -> List[Dict[str, Any]]:
-    """Сортировка ачивок по сложности через lambda."""
-    return sorted(achievements, key=lambda x: x["required_actions"])
+    achievements: list[Achievement],
+) -> list[Achievement]:
+    """Отсортировать достижения по количеству действий."""
+    return sorted(
+        achievements,
+        key=lambda item: item.required_actions,
+    )
 
 
 def get_achievements_by_game(
-    achievements: List[Dict[str, Any]],
-    game_id: int
-) -> List[Dict[str, Any]]:
-    """Получение всех достижений, относящихся к конкретной игре."""
-    return [a for a in achievements if a.get("game_id") == game_id]
+    achievements: list[Achievement],
+    game: Game,
+) -> list[Achievement]:
+    """Вернуть достижения выбранной игры."""
+    return [item for item in achievements if item.game is game]
