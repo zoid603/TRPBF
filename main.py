@@ -1,3 +1,5 @@
+import logging
+import os
 from datetime import date
 
 from achievements import (
@@ -5,7 +7,6 @@ from achievements import (
     find_achievements,
     get_achievement_by_id,
     get_achievements_by_game,
-    sort_achievements_by_complexity,
 )
 from games import add_game, get_game_by_id
 from models import Achievement, Game, Progress, User
@@ -24,13 +25,23 @@ from storage import (
     save_progress,
     save_users,
 )
-from users import add_user, get_user_by_username
+from users import add_user, get_user_by_id, get_user_by_username, show_users
 from utils import input_date, input_int
 
 USERS_FILE = "data/users.json"
 GAMES_FILE = "data/games.json"
 ACHIEVEMENTS_FILE = "data/achievements.json"
 PROGRESS_FILE = "data/progress.json"
+LOG_FILE = "logs/app.log"
+
+os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+    encoding="utf-8",
+)
+logger = logging.getLogger(__name__)
 
 
 def show_games_list(
@@ -158,8 +169,11 @@ def show_progress_card_from_menu(
     progress_list: list[Progress],
 ) -> None:
     """Обработать вывод карточки прогресса из меню."""
-    username = input("Имя пользователя: ").strip()
-    user = get_user_by_username(users, username)
+    user_input = input("Имя или ID пользователя: ").strip()
+    if user_input.isdigit():
+        user = get_user_by_id(users, int(user_input))
+    else:
+        user = get_user_by_username(users, user_input)
     if user is None:
         print("Пользователь не найден.")
         return
@@ -173,6 +187,7 @@ def show_progress_card_from_menu(
 
 def main() -> None:
     """Запустить консольное меню трекера достижений."""
+    logger.info("Запуск приложения")
     games = load_games(GAMES_FILE)
     users = load_users(USERS_FILE)
     achievements = load_achievements(ACHIEVEMENTS_FILE, games)
@@ -181,12 +196,12 @@ def main() -> None:
     while True:
         print("\n=== Game Achievement Tracker ===")
         print("1. Показать список игр")
-        print("2. Показать достижения конкретной игры")
-        print("3. Показать вообще все достижения")
+        print("2. Показать достижения выбранной игры")
+        print("3. Показать все достижения")
         print("4. Добавить игру")
         print("5. Добавить достижение к игре")
-        print("6. Найти достижения по названию")
-        print("7. Отсортировать достижения по сложности")
+        print("6. Найти достижение")
+        print("7. Показать всех игроков")
         print("8. Зафиксировать прогресс игрока")
         print("9. Показать карточку прогресса")
         print("0. Сохранить и выйти")
@@ -208,12 +223,15 @@ def main() -> None:
         elif choice == "5":
             add_achievement_from_menu(games, achievements)
         elif choice == "6":
-            query = input("Введите поисковый запрос: ").strip()
-            results = list(find_achievements(achievements, query))
+            query = input("Введите название или ID достижения: ").strip()
+            if query.isdigit():
+                achievement = get_achievement_by_id(achievements, int(query))
+                results = [] if achievement is None else [achievement]
+            else:
+                results = list(find_achievements(achievements, query))
             show_all_achievements(results)
         elif choice == "7":
-            sorted_achievements = sort_achievements_by_complexity(achievements)
-            show_all_achievements(sorted_achievements)
+            show_users(users)
         elif choice == "8":
             record_progress_from_menu(users, achievements, progress_list)
         elif choice == "9":
@@ -223,10 +241,11 @@ def main() -> None:
             save_users(USERS_FILE, users)
             save_achievements(ACHIEVEMENTS_FILE, achievements)
             save_progress(PROGRESS_FILE, progress_list)
-            print("Все изменения сохранены в JSON. Выход.")
+            logger.info("Данные сохранены, приложение завершено")
             break
         else:
             print("Неизвестный пункт меню.")
+            logger.warning("Неизвестный пункт меню: %s", choice)
 
 
 if __name__ == "__main__":

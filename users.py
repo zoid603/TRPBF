@@ -21,3 +21,18 @@ def get_user_by_username(
         (user for user in users if user.username.casefold() == normalized),
         None,
     )
+
+
+def get_user_by_id(users: list[User], user_id: int) -> Optional[User]:
+    """Найти пользователя по идентификатору."""
+    return next((user for user in users if user.id == user_id), None)
+
+
+def show_users(users: list[User]) -> None:
+    """Вывести список всех игроков."""
+    print("\n--- Список игроков ---")
+    if not users:
+        print("Игроки еще не добавлены.")
+        return
+    for user in users:
+        print(user)

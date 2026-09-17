@@ -47,16 +47,6 @@ def find_achievements(
     )
 
 
-def sort_achievements_by_complexity(
-    achievements: list[Achievement],
-) -> list[Achievement]:
-    """Отсортировать достижения по количеству действий."""
-    return sorted(
-        achievements,
-        key=lambda item: item.required_actions,
-    )
-
-
 def get_achievements_by_game(
     achievements: list[Achievement],
     game: Game,

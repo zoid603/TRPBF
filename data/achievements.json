@@ -12,5 +12,12 @@
     "name": "Мастер BFG",
     "required_actions": 10,
     "is_secret": true
+  },
+  {
+    "id": 3,
+    "game_id": 4,
+    "name": "Hs_master",
+    "required_actions": 100,
+    "is_secret": false
   }
 ]
