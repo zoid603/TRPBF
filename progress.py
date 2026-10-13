@@ -45,6 +45,17 @@ def get_user_progress(
     )
 
 
+def get_progress_by_id(
+    progress_list: list[Progress],
+    progress_id: int,
+) -> Optional[Progress]:
+    """Найти прогресс по идентификатору."""
+    return next(
+        (item for item in progress_list if item.id == progress_id),
+        None,
+    )
+
+
 def format_achievement_summary(progress: Progress) -> str:
     """Сформировать карточку прогресса из объекта Progress."""
     return (

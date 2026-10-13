@@ -1,2 +1,4 @@
 [flake8]
 exclude = venv, .pytest_cache, __pycache__
+per-file-ignores =
+    config/settings.py:E501
