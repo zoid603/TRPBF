@@ -1,0 +1,17 @@
+<li class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+        <a href="{% url 'progress_records:detail' progress.id %}" class="text-decoration-none fw-bold">
+            {{ progress.user.username|default:"Неизвестный игрок" }}: {{ progress.achievement.name|default:"Без названия" }}
+        </a>
+        <div class="text-muted small">Прогресс: {{ progress.percent }}%</div>
+    </div>
+    <div>
+        {% if progress.status == "Получено" %}
+            <span class="badge bg-success progress-status">{{ progress.status }}</span>
+        {% elif progress.status == "В процессе" %}
+            <span class="badge bg-warning text-dark progress-status">{{ progress.status }}</span>
+        {% else %}
+            <span class="badge bg-secondary progress-status">{{ progress.status }}</span>
+        {% endif %}
+    </div>
+</li>

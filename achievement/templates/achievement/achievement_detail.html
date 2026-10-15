@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{% if achievement %}{{ achievement.name }}{% else %}Достижение не найдено{% endif %}{% endblock %}
+
+{% block content %}
+{% if achievement %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title text-primary">{{ achievement.name|default:"Без названия" }}</h2>
+            <p class="card-text"><strong>ID:</strong> {{ achievement.id }}</p>
+            <p class="card-text">
+                <strong>Игра:</strong>
+                <a href="{% url 'games_app:detail' achievement.game.id %}">
+                    {{ achievement.game.title|default:"Без названия" }}
+                </a>
+            </p>
+            <p class="card-text"><strong>Требуется действий:</strong> {{ achievement.required_actions|default:0 }}</p>
+            <p class="card-text">
+                <strong>Тип:</strong>
+                {% if achievement.is_secret %}
+                    <span class="badge bg-warning text-dark">Секретное достижение</span>
+                {% else %}
+                    <span class="badge bg-success">Открытое достижение</span>
+                {% endif %}
+            </p>
+
+            <a href="{% url 'achievement:list' %}" class="btn btn-outline-secondary mt-3">← К списку достижений</a>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Достижение не найдено</h4>
+        <p>Запрошенное достижение не существует или было удалено.</p>
+        <hr>
+        <a href="{% url 'achievement:list' %}" class="btn btn-danger">К списку достижений</a>
+    </div>
+{% endif %}
+{% endblock %}

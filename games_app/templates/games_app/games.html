@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Игры | Game Achievement Tracker{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Игры</h1>
+<p class="text-muted">Всего игр в каталоге: {{ games_list|length }}</p>
+
+<ul class="list-group mb-4">
+    {% for item in games_with_counts %}
+        {% with game=item.game achievements_count=item.count %}
+            {% include "games_app/includes/game_card.html" %}
+        {% endwith %}
+    {% empty %}
+        <li class="list-group-item text-muted">Игры пока не добавлены.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'homepage:index' %}" class="btn btn-outline-secondary">← На главную</a>
+{% endblock %}

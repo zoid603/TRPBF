@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Достижения | Game Achievement Tracker{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Достижения</h1>
+<p class="text-muted">Всего достижений: {{ achievements_list|length }}</p>
+
+<ul class="list-group mb-4">
+    {% for achievement in achievements_list %}
+        {% include "achievement/includes/achievement_card.html" %}
+    {% empty %}
+        <li class="list-group-item text-muted">Достижения пока не добавлены.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'homepage:index' %}" class="btn btn-outline-secondary">← На главную</a>
+{% endblock %}

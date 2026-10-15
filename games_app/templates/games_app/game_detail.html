@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{% if game %}{{ game.title }}{% else %}Игра не найдена{% endif %}{% endblock %}
+
+{% block content %}
+{% if game %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title text-primary">{{ game.title|default:"Без названия" }}</h2>
+            <p class="card-text"><strong>ID:</strong> {{ game.id }}</p>
+            <p class="card-text"><strong>Всего достижений:</strong> {{ game_achievements|length }}</p>
+
+            <h4 class="mt-4 mb-3">Список достижений</h4>
+            <ul class="list-group mb-4">
+                {% for achievement in game_achievements %}
+                    <li class="list-group-item">
+                        <a href="{% url 'achievement:detail' achievement.id %}" class="text-decoration-none">
+                            {{ achievement.name|default:"Без названия" }}
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">Для этой игры пока нет достижений.</li>
+                {% endfor %}
+            </ul>
+
+            <a href="{% url 'games_app:list' %}" class="btn btn-outline-secondary">← К списку игр</a>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Игра не найдена</h4>
+        <p>Запрошенная игра не существует или была удалена.</p>
+        <hr>
+        <a href="{% url 'games_app:list' %}" class="btn btn-danger">К списку игр</a>
+    </div>
+{% endif %}
+{% endblock %}

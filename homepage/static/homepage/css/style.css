@@ -1,0 +1,38 @@
+body {
+    min-height: 100vh;
+}
+
+.app-logo {
+    width: 120px;
+    height: auto;
+    margin: 1rem;
+}
+
+.app-navigation {
+    padding: 0.5rem 1rem;
+    background-color: #212529;
+    border-radius: 8px;
+}
+
+.app-navigation .nav-link {
+    color: #f8f9fa;
+}
+
+.app-navigation .nav-link:hover {
+    color: #0d6efd;
+}
+
+.game-card {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.achievement-badge {
+    font-weight: 600;
+}
+
+.progress-status {
+    font-weight: 600;
+}

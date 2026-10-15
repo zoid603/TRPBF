@@ -1,0 +1,8 @@
+<li class="list-group-item d-flex justify-content-between align-items-center game-card">
+    <a href="{% url 'games_app:detail' game.id %}" class="text-decoration-none fw-bold">
+        {{ game.title|default:"Без названия" }}
+    </a>
+    <span class="badge bg-primary rounded-pill">
+        Достижений: {{ achievements_count|default:0 }}
+    </span>
+</li>

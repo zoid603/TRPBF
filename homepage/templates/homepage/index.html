@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Главная | Game Achievement Tracker{% endblock %}
+
+{% block content %}
+<h1 class="display-4">Game Achievement Tracker</h1>
+<p class="lead">Трекер игровых достижений.</p>
+<p>Основные разделы:</p>
+<a href="{% url 'games_app:list' %}" class="btn btn-primary me-2">Игры</a>
+<a href="{% url 'achievement:list' %}" class="btn btn-secondary me-2">Достижения</a>
+<a href="{% url 'progress_records:list' %}" class="btn btn-outline-primary">Прогресс</a>
+{% endblock %}

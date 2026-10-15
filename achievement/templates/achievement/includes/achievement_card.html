@@ -1,0 +1,13 @@
+<li class="list-group-item d-flex justify-content-between align-items-center">
+    <a href="{% url 'achievement:detail' achievement.id %}" class="text-decoration-none fw-bold">
+        {{ achievement.name|default:"Без названия" }}
+    </a>
+    <div>
+        {% if achievement.is_secret %}
+            <span class="badge bg-warning text-dark achievement-badge me-2">Секретное</span>
+        {% else %}
+            <span class="badge bg-success achievement-badge me-2">Обычное</span>
+        {% endif %}
+        <span class="badge bg-secondary">Требуется действий: {{ achievement.required_actions|default:0 }}</span>
+    </div>
+</li>

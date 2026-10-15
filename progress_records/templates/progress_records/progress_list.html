@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Прогресс | Game Achievement Tracker{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Прогресс игроков</h1>
+<p class="text-muted">Всего записей прогресса: {{ progress_list|length }}</p>
+
+<ul class="list-group mb-4">
+    {% for progress in progress_list %}
+        {% include "progress_records/includes/progress_status.html" %}
+    {% empty %}
+        <li class="list-group-item text-muted">Записи прогресса отсутствуют.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'homepage:index' %}" class="btn btn-outline-secondary">← На главную</a>
+{% endblock %}

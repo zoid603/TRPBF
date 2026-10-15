@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{% if progress %}Прогресс #{{ progress.id }}{% else %}Прогресс не найден{% endif %}{% endblock %}
+
+{% block content %}
+{% if progress %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title text-primary">{{ progress.user.username|default:"Неизвестный игрок" }}</h2>
+            <p class="card-text"><strong>ID записи:</strong> {{ progress.id }}</p>
+            <p class="card-text">
+                <strong>Игра:</strong>
+                <a href="{% url 'games_app:detail' progress.achievement.game.id %}">
+                    {{ progress.achievement.game.title|default:"Без названия" }}
+                </a>
+            </p>
+            <p class="card-text">
+                <strong>Достижение:</strong>
+                <a href="{% url 'achievement:detail' progress.achievement.id %}">
+                    {{ progress.achievement.name|default:"Без названия" }}
+                </a>
+            </p>
+            <p class="card-text">
+                <strong>Прогресс:</strong> {{ progress.percent }}%
+                {% if progress.status == "Получено" %}
+                    <span class="badge bg-success">{{ progress.status }}</span>
+                {% elif progress.status == "В процессе" %}
+                    <span class="badge bg-warning text-dark">{{ progress.status }}</span>
+                {% else %}
+                    <span class="badge bg-secondary">{{ progress.status }}</span>
+                {% endif %}
+            </p>
+            <p class="card-text"><strong>Дата фиксации:</strong> {{ progress.record_date|default:"—" }}</p>
+
+            <a href="{% url 'progress_records:list' %}" class="btn btn-outline-secondary mt-3">← К списку прогресса</a>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Прогресс не найден</h4>
+        <p>Запрошенная запись прогресса не существует или была удалена.</p>
+        <hr>
+        <a href="{% url 'progress_records:list' %}" class="btn btn-danger">К списку прогресса</a>
+    </div>
+{% endif %}
+{% endblock %}
