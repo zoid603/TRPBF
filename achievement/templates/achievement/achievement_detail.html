@@ -10,7 +10,7 @@
             <p class="card-text"><strong>ID:</strong> {{ achievement.id }}</p>
             <p class="card-text">
                 <strong>Игра:</strong>
-                <a href="{% url 'games_app:detail' achievement.game.id %}">
+                <a href="{% url 'games_app:detail' achievement.game.slug %}">
                     {{ achievement.game.title|default:"Без названия" }}
                 </a>
             </p>

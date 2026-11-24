@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Case, IntegerField, Value, When
 
 
 class Progress(models.Model):
@@ -20,6 +21,16 @@ class Progress(models.Model):
     )
     completed_actions = models.PositiveIntegerField("выполнено действий")
     record_date = models.CharField("дата фиксации", max_length=10)
+    is_started = models.GeneratedField(
+        verbose_name="начат",
+        expression=Case(
+            When(completed_actions__gt=0, then=Value(1)),
+            default=Value(0),
+            output_field=IntegerField(),
+        ),
+        output_field=IntegerField(),
+        db_persist=True,
+    )
 
     class Meta:
         db_table = "progress"

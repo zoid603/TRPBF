@@ -3,6 +3,8 @@ from pathlib import Path
 
 from django.core.management.base import BaseCommand
 
+from django.utils.text import slugify
+
 from achievement.models import Achievement
 from games_app.models import Game
 from players.models import Player
@@ -41,7 +43,10 @@ class Command(BaseCommand):
         for item in games:
             Game.objects.update_or_create(
                 id=item["id"],
-                defaults={"title": item["title"]},
+                defaults={
+                    "title": item["title"],
+                    "slug": slugify(item["title"]),
+                },
             )
         for item in users:
             Player.objects.update_or_create(

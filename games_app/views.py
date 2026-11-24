@@ -30,13 +30,25 @@ def games(request):
     return render(request, "games_app/games.html", context)
 
 
-def game_detail(request, game_id):
-    """Страница игры и её достижений."""
-    game = (
-        Game.objects.prefetch_related("achievements")
-        .filter(pk=game_id)
-        .first()
+def game_detail(request, game_slug):
+    """Страница игры, открытая по слагу."""
+    return _render_game(
+        request,
+        Game.objects.filter(slug=game_slug),
     )
+
+
+def game_detail_by_id(request, game_id):
+    """Страница игры по числовому идентификатору."""
+    return _render_game(
+        request,
+        Game.objects.filter(pk=game_id),
+    )
+
+
+def _render_game(request, queryset):
+    """Общий вывод карточки игры."""
+    game = queryset.prefetch_related("achievements").first()
     achievements = []
     if game is not None:
         achievements = game.achievements.all().order_by("name")
