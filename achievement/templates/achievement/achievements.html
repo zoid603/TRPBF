@@ -5,6 +5,11 @@
 {% block content %}
 <h1 class="mb-4">Достижения</h1>
 <p class="text-muted">Всего достижений: {{ achievements_list|length }}</p>
+<p>
+    <a href="{% url 'achievement:open' %}" class="btn btn-outline-primary">
+        Неполученные на дату
+    </a>
+</p>
 
 <ul class="list-group mb-4">
     {% for achievement in achievements_list %}

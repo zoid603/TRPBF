@@ -8,5 +8,6 @@
 <p>Основные разделы:</p>
 <a href="{% url 'games_app:list' %}" class="btn btn-primary me-2">Игры</a>
 <a href="{% url 'achievement:list' %}" class="btn btn-secondary me-2">Достижения</a>
-<a href="{% url 'progress_records:list' %}" class="btn btn-outline-primary">Прогресс</a>
+<a href="{% url 'progress_records:list' %}" class="btn btn-outline-primary me-2">Прогресс</a>
+<a href="{% url 'progress_records:statistics' %}" class="btn btn-outline-secondary">Статистика</a>
 {% endblock %}

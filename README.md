@@ -344,6 +344,13 @@ project/
 ├── README.md
 ├── requirements.txt
 ├── main.py
+├── db/
+│   ├── database.py
+│   ├── import_json.py
+│   └── queries.py
+├── sql/
+│   ├── schema.sql
+│   └── queries.sql
 ├── storage.py
 ├── utils.py
 │
@@ -655,14 +662,45 @@ git status
 * оформление Bootstrap 5.3 в сочетании с собственными стилями;
 * сохранена консольная версия приложения (ПР3).
 
-На текущем этапе данные по-прежнему хранятся в JSON-файлах, Django ORM
-и база данных приложения не используются, формы не реализованы: их
-подключение относится к следующим практическим работам.
+## База данных SQLite (ПР7)
+
+На ПР7 данные каталога перенесены из JSON в SQLite. JSON-файлы и
+консольное приложение сохранены.
+
+* база данных: `data/tracker.sqlite`;
+* таблицы `games`, `users`, `achievements`, `progress` создаются
+  скриптом `sql/schema.sql`;
+* первичные ключи: `id` каждой таблицы;
+* внешние ключи: `achievements.game_id` → `games.id`,
+  `progress.user_id` → `users.id`,
+  `progress.achievement_id` → `achievements.id`;
+* импорт: `python -m db.import_json`;
+* запросы выборки, фильтрации, JOIN, COUNT и GROUP BY лежат в
+  `sql/queries.sql`;
+* представления читают базу через `sqlite3.Row` (`db/queries.py`) и
+  передают результат в прежние шаблоны.
+
+Страницы, которые берут данные из SQLite:
+
+* `/games/` и `/games/<id>/` — игры и достижения игры;
+* `/achievements/` и `/achievements/<id>/` — достижения;
+* `/achievements/open/?date=YYYY-MM-DD` — достижения, не полученные
+  на выбранную дату;
+* `/progress/` и `/progress/<id>/` — записи прогресса;
+* `/progress/statistics/` — число записей прогресса по играм.
+
+Повторный импорт:
+
+```text
+python -m db.import_json
+```
+
+Django ORM на этом этапе не используется: следующий шаг — модели и
+миграции.
 
 Планируется:
 
 * перенос сущностей `Game`, `Achievement`, `User` и `Progress` в Django ORM;
-* подключение базы данных;
 * формы создания и редактирования объектов;
 * использование отложенной логики ПР3 (добавление игры, достижения и
   игрока, запись прогресса, поиск);

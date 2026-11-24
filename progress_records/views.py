@@ -1,50 +1,31 @@
 from django.shortcuts import render
 
-from progress import get_progress_by_id
-from storage import load_achievements, load_games, load_progress, load_users
+from db.queries import get_progress, list_progress, progress_statistics
 
 
 def progress_list(request):
-    """Страница со списком записей прогресса."""
-    games_list = load_games("data/games.json")
-    users_list = load_users("data/users.json")
-    achievements_list = load_achievements(
-        "data/achievements.json", games_list
-    )
-    records = load_progress(
-        "data/progress.json", users_list, achievements_list
-    )
+    """Страница со списком записей прогресса из SQLite."""
     context = {
-        "progress_list": records,
+        "progress_list": list_progress(),
     }
     return render(request, "progress_records/progress_list.html", context)
 
 
 def progress_detail(request, progress_id):
     """Страница карточки прогресса."""
-    games_list = load_games("data/games.json")
-    users_list = load_users("data/users.json")
-    achievements_list = load_achievements(
-        "data/achievements.json", games_list
-    )
-    records = load_progress(
-        "data/progress.json", users_list, achievements_list
-    )
-    record = get_progress_by_id(records, progress_id)
-    if record is None:
-        context = {"progress": None}
-        return render(
-            request,
-            "progress_records/progress_detail.html",
-            context,
-            status=404,
-        )
-    context = {
-        "progress": record,
-    }
+    record = get_progress(progress_id)
+    status = 200 if record is not None else 404
     return render(
         request,
         "progress_records/progress_detail.html",
-        context,
-        status=200,
+        {"progress": record},
+        status=status,
     )
+
+
+def statistics(request):
+    """Число записей прогресса по каждой игре."""
+    context = {
+        "statistics": progress_statistics(),
+    }
+    return render(request, "progress_records/statistics.html", context)

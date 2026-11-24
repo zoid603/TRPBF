@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Статистика | Game Achievement Tracker{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Статистика прогресса</h1>
+<p class="text-muted">Количество записей прогресса по каждой игре.</p>
+
+{% for item in statistics %}
+    <article class="card shadow-sm mb-3 statistics-item">
+        <div class="card-body">
+            <h2 class="h5 card-title">{{ item.game_title }}</h2>
+            <p class="card-text mb-0">
+                Записей прогресса: {{ item.progress_count }}
+            </p>
+        </div>
+    </article>
+{% empty %}
+    <p class="text-muted">Данные отсутствуют.</p>
+{% endfor %}
+
+<a href="{% url 'progress_records:list' %}" class="btn btn-outline-secondary">
+    ← К списку прогресса
+</a>
+{% endblock %}
