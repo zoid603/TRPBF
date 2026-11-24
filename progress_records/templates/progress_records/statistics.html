@@ -4,12 +4,12 @@
 
 {% block content %}
 <h1 class="mb-4">Статистика прогресса</h1>
-<p class="text-muted">Количество записей прогресса по каждой игре.</p>
+<p class="text-muted">Количество записей прогресса по каждой игре. Всего записей: {{ total }}.</p>
 
 {% for item in statistics %}
     <article class="card shadow-sm mb-3 statistics-item">
         <div class="card-body">
-            <h2 class="h5 card-title">{{ item.game_title }}</h2>
+            <h2 class="h5 card-title">{{ item.title }}</h2>
             <p class="card-text mb-0">
                 Записей прогресса: {{ item.progress_count }}
             </p>

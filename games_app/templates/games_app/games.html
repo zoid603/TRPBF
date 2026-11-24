@@ -4,6 +4,22 @@
 
 {% block content %}
 <h1 class="mb-4">Игры</h1>
+<form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-auto">
+        <label for="q" class="form-label">Название</label>
+        <input type="search" id="q" name="q" value="{{ query }}" class="form-control">
+    </div>
+    <div class="col-auto">
+        <label for="sort" class="form-label">Сортировка</label>
+        <select id="sort" name="sort" class="form-select">
+            <option value="title" {% if sort != "count" %}selected{% endif %}>По названию</option>
+            <option value="count" {% if sort == "count" %}selected{% endif %}>По числу достижений</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </div>
+</form>
 <p class="text-muted">Всего игр в каталоге: {{ games_list|length }}</p>
 
 <ul class="list-group mb-4">

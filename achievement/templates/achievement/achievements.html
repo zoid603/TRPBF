@@ -4,6 +4,27 @@
 
 {% block content %}
 <h1 class="mb-4">Достижения</h1>
+<form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-auto">
+        <label for="q" class="form-label">Поиск</label>
+        <input type="search" id="q" name="q" value="{{ query }}" class="form-control">
+    </div>
+    <div class="col-auto">
+        <label for="secret" class="form-label">Тип</label>
+        <select id="secret" name="secret" class="form-select">
+            <option value="">Все</option>
+            <option value="1" {% if secret == "1" %}selected{% endif %}>Секретные</option>
+            <option value="0" {% if secret == "0" %}selected{% endif %}>Обычные</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label for="min_actions" class="form-label">Минимум действий</label>
+        <input type="number" min="0" id="min_actions" name="min_actions" value="{{ min_actions }}" class="form-control">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </div>
+</form>
 <p class="text-muted">Всего достижений: {{ achievements_list|length }}</p>
 <p>
     <a href="{% url 'achievement:open' %}" class="btn btn-outline-primary">

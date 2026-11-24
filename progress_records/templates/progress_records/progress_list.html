@@ -4,7 +4,31 @@
 
 {% block content %}
 <h1 class="mb-4">Прогресс игроков</h1>
-<p class="text-muted">Всего записей прогресса: {{ progress_list|length }}</p>
+<form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-auto">
+        <label for="q" class="form-label">Игрок или достижение</label>
+        <input type="search" id="q" name="q" value="{{ query }}" class="form-control">
+    </div>
+    <div class="col-auto">
+        <label for="state" class="form-label">Статус</label>
+        <select id="state" name="state" class="form-select">
+            <option value="">Все</option>
+            <option value="active" {% if state == "active" %}selected{% endif %}>В процессе</option>
+            <option value="done" {% if state == "done" %}selected{% endif %}>Получено</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label for="sort" class="form-label">Сортировка</label>
+        <select id="sort" name="sort" class="form-select">
+            <option value="date" {% if sort != "user" %}selected{% endif %}>По дате</option>
+            <option value="user" {% if sort == "user" %}selected{% endif %}>По игроку</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Показать</button>
+    </div>
+</form>
+<p class="text-muted">На странице: {{ progress_list|length }}. Всего: {{ page_obj.paginator.count }}.</p>
 
 <ul class="list-group mb-4">
     {% for progress in progress_list %}
@@ -21,5 +45,16 @@
         <li class="list-group-item text-muted">Записи прогресса отсутствуют.</li>
     {% endfor %}
 </ul>
+{% if page_obj.paginator.num_pages > 1 %}
+    <nav class="mb-4">
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-secondary me-2" href="?page={{ page_obj.previous_page_number }}&amp;{{ querystring }}">Назад</a>
+        {% endif %}
+        <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-secondary ms-2" href="?page={{ page_obj.next_page_number }}&amp;{{ querystring }}">Дальше</a>
+        {% endif %}
+    </nav>
+{% endif %}
 <a href="{% url 'homepage:index' %}" class="btn btn-outline-secondary">← На главную</a>
 {% endblock %}
