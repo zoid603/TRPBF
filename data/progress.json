@@ -12,5 +12,19 @@
     "achievement_id": 3,
     "completed_actions": 12,
     "record_date": "2026-10-10"
+  },
+  {
+    "id": 3,
+    "user_id": 2,
+    "achievement_id": 2,
+    "completed_actions": 10,
+    "record_date": "2026-10-01"
+  },
+  {
+    "id": 4,
+    "user_id": 2,
+    "achievement_id": 1,
+    "completed_actions": 0,
+    "record_date": "2026-10-20"
   }
 ]

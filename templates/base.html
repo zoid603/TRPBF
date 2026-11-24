@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="{% static 'homepage/css/style.css' %}">
 </head>
 <body>
-    <img
-        src="{% static 'homepage/img/logo.png' %}"
-        alt="Game Achievement Tracker"
-        class="app-logo"
-    >
-
-    {% include "includes/navigation.html" %}
+    <header class="app-header">
+        <img
+            src="{% static 'homepage/img/logo.png' %}"
+            alt="Game Achievement Tracker"
+            class="app-logo"
+        >
+        {% include "includes/navigation.html" %}
+    </header>
 
     <main class="container">
         {% block content %}{% endblock %}

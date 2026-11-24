@@ -22,13 +22,7 @@
             </p>
             <p class="card-text">
                 <strong>Прогресс:</strong> {{ progress.percent }}%
-                {% if progress.status == "Получено" %}
-                    <span class="badge bg-success">{{ progress.status }}</span>
-                {% elif progress.status == "В процессе" %}
-                    <span class="badge bg-warning text-dark">{{ progress.status }}</span>
-                {% else %}
-                    <span class="badge bg-secondary">{{ progress.status }}</span>
-                {% endif %}
+                {% include "progress_records/includes/progress_status.html" %}
             </p>
             <p class="card-text"><strong>Дата фиксации:</strong> {{ progress.record_date|default:"—" }}</p>
 

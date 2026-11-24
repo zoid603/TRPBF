@@ -8,7 +8,15 @@
 
 <ul class="list-group mb-4">
     {% for progress in progress_list %}
-        {% include "progress_records/includes/progress_status.html" %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <a href="{% url 'progress_records:detail' progress.id %}" class="text-decoration-none fw-bold">
+                    {{ progress.user.username|default:"Неизвестный игрок" }}: {{ progress.achievement.name|default:"Без названия" }}
+                </a>
+                <div class="text-muted small">Прогресс: {{ progress.percent }}%</div>
+            </div>
+            {% include "progress_records/includes/progress_status.html" %}
+        </li>
     {% empty %}
         <li class="list-group-item text-muted">Записи прогресса отсутствуют.</li>
     {% endfor %}

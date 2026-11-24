@@ -2,16 +2,31 @@ body {
     min-height: 100vh;
 }
 
+.app-header {
+    width: min(1140px, calc(100% - 2rem));
+    margin: 1.25rem auto 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .app-logo {
-    width: 120px;
+    width: 88px;
     height: auto;
-    margin: 1rem;
+    margin: 0 0 -12px;
+    border: 0;
+    background: transparent;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 3px 4px rgba(33, 37, 41, 0.18));
 }
 
 .app-navigation {
-    padding: 0.5rem 1rem;
+    width: 100%;
+    justify-content: center;
+    padding: 0.95rem 1rem 0.55rem;
     background-color: #212529;
-    border-radius: 8px;
+    border-radius: 12px;
 }
 
 .app-navigation .nav-link {
@@ -35,4 +50,19 @@ body {
 
 .progress-status {
     font-weight: 600;
+}
+
+.progress-status-done {
+    background-color: #198754;
+    color: #fff;
+}
+
+.progress-status-active {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.progress-status-new {
+    background-color: #6c757d;
+    color: #fff;
 }
